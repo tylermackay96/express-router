@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const { check, validationResult } = require("express-validator");
 
 // List of Users
 let users = [
@@ -33,10 +34,19 @@ router.get("/:id", (req, res) => {
 })
 
 // Create a new user
-router.post('/users', (req, res) => {
-    const newUser = req.body;
-    users.push(newUser);
-    res.json(users);
+usersRouter.post("/", [
+    check("name", "Name is required").trim().not().isEmpty(),
+  ], (req, res) => {
+    // Validate the request object
+    const errors = validationResult(req);
+    // If there are errors, respond with the errors
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ error: errors.array() });
+      }
+       // If there are no errors, create a new user and respond with the updated list of users
+    const newUser = { name: req.body.name }; // Example code to create a new user
+    const allUsers = [{ name: "John" }, { name: "Jane" }, newUser]; // Example code to get the list of all users
+    res.json(allUsers);
   });
   
   // Update an existing user

@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const { check, validationResult } = require("express-validator");
 
 // List of Fruits
 let fruits = [
@@ -33,12 +34,18 @@ router.get("/:id", (req, res) => {
 })
 
 // Create a new fruit
-router.post('/fruits', (req, res) => {
-    const newFruit = req.body;
-    fruits.push(newFruit);
-    res.json(fruits);
-  });
-  
+router.post('/fruits', [
+    check('color').notEmpty().trim().withMessage('Color field is required')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ error: errors.array() });
+    } else {
+        const newFruit = req.body;
+        fruits.push(newFruit);
+        res.json(fruits);
+    }
+});
   // Update an existing fruit
   router.put('/fruits/:id', (req, res) => {
     const id = req.params.id;
