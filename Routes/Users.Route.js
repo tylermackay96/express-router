@@ -32,6 +32,28 @@ router.get("/:id", (req, res) => {
     res.json(user)
 })
 
+// Create a new user
+router.post('/users', (req, res) => {
+    const newUser = req.body;
+    users.push(newUser);
+    res.json(users);
+  });
+  
+  // Update an existing user
+  router.put('/users/:id', (req, res) => {
+    const id = req.params.id;
+    const updatedUser = req.body;
+    users[id - 1] = updatedUser;
+    res.json(users);
+  });
+  
+  // Delete an existing user
+  router.delete('/users/:id', (req, res) => {
+    const id = req.params.id;
+    users.splice(id - 1, 1);
+    res.json(users);
+  });
+  
 
 module.exports = router
 

@@ -32,6 +32,29 @@ router.get("/:id", (req, res) => {
     res.json(fruit)
 })
 
+// Create a new fruit
+router.post('/fruits', (req, res) => {
+    const newFruit = req.body;
+    fruits.push(newFruit);
+    res.json(fruits);
+  });
+  
+  // Update an existing fruit
+  router.put('/fruits/:id', (req, res) => {
+    const id = req.params.id;
+    const updatedFruit = req.body;
+    fruits[id - 1] = updatedFruit;
+    res.json(fruits);
+  });
+  
+  // Delete an existing fruit
+  router.delete('/fruits/:id', (req, res) => {
+    const id = req.params.id;
+    fruits.splice(id - 1, 1);
+    res.json(fruits);
+  });
+  
+
 module.exports = router
 
 
